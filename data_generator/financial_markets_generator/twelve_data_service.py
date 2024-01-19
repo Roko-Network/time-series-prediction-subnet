@@ -27,6 +27,9 @@ class TwelveDataService:
                     try:
                         close_price = float(item.get('close', 0))
                         volume = float(item.get('volume', 0))
+                        print("----------fetch_data-----------------")
+                        print(volume)
+                        print("---------------------------")
                         if volume > 0:  # Only include data points with volume
                             aggregated_data.append({'close': close_price, 'volume': volume})
                     except (KeyError, ValueError, TypeError) as e:
@@ -40,6 +43,6 @@ class TwelveDataService:
 
 api_key = "909be1f927ed408ca0c086e23aa20fe5"
 service = TwelveDataService(api_key)
-weighted_avg_close = service.get_weighted_avg_close_price('BTC/USD', '5min', 100, ['binance', 'coinbase', 'bitfinex'])
+weighted_avg_close = service.get_weighted_avg_close_price('BTC/USD', '5min', 100, ['coinbase pro', 'binance'])
 
 print("Weighted Average Closing Price:", weighted_avg_close)
