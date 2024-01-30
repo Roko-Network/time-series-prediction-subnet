@@ -555,33 +555,33 @@ if __name__ == "__main__":
     bt.logging.info("sleep time interval: ", time_interval)
     while True:
         current_time = datetime.now().time()
-        if current_time.minute in [0, 30]:
-            time.sleep(time_interval)
-            # updating metagraph before run
-            metagraph.sync(subtensor = subtensor)
-            bt.logging.info(f"Metagraph: {metagraph}")
+        # if current_time.minute in [0, 30]:
+        #     time.sleep(time_interval)
+        # updating metagraph before run
+        metagraph.sync(subtensor = subtensor)
+        bt.logging.info(f"Metagraph: {metagraph}")
 
-            requests = []
-            # see if any files exist, if not then generate a client request (a live prediction)
-            all_files = ValiBkpUtils.get_all_files_in_dir(ValiBkpUtils.get_vali_predictions_dir())
-            # if len(all_files) == 0 or int(config.continuous_data_feed) == 1:
+        requests = []
+        # see if any files exist, if not then generate a client request (a live prediction)
+        all_files = ValiBkpUtils.get_all_files_in_dir(ValiBkpUtils.get_vali_predictions_dir())
+        # if len(all_files) == 0 or int(config.continuous_data_feed) == 1:
 
-            # standardizing getting request
-            requests.append(ValiUtils.generate_standard_request(ClientRequest))
+        # standardizing getting request
+        requests.append(ValiUtils.generate_standard_request(ClientRequest))
 
-            predictions_to_complete = ValiUtils.get_predictions_to_complete()
+        predictions_to_complete = ValiUtils.get_predictions_to_complete()
 
-            bt.logging.info(f"Have [{len(predictions_to_complete)}] requests prepared to have weights set for")
+        bt.logging.info(f"Have [{len(predictions_to_complete)}] requests prepared to have weights set for")
 
-            if len(predictions_to_complete) > 0:
-                # add one request of predictions to complete
-                requests.append(predictions_to_complete[0])
+        if len(predictions_to_complete) > 0:
+            # add one request of predictions to complete
+            requests.append(predictions_to_complete[0])
 
-            # if no requests to fill, randomly send in a training request to help them train
-            # randomize to not have all validators sending in training data requests simultaneously to assist with load
-            if len(requests) == 0:
-                requests.append(ValiUtils.generate_standard_request(TrainingRequest))
+        # if no requests to fill, randomly send in a training request to help them train
+        # randomize to not have all validators sending in training data requests simultaneously to assist with load
+        if len(requests) == 0:
+            requests.append(ValiUtils.generate_standard_request(TrainingRequest))
 
-            bt.logging.info(f"Number of requests being handled [{len(requests)}]")
-            run_time_series_validation(wallet, config, metagraph, requests)
-            time.sleep(60)
+        bt.logging.info(f"Number of requests being handled [{len(requests)}]")
+        run_time_series_validation(wallet, config, metagraph, requests)
+        time.sleep(60)

@@ -1,3 +1,4 @@
+from data_generator.financial_markets_generator.twelve_data import TwelveData
 from data_generator.financial_markets_generator.binance_data import BinanceData
 from data_generator.financial_markets_generator.bybit_data import ByBitData
 from vali_objects.exceptions.incorrect_live_results_count_exception import IncorrectLiveResultsCountException
@@ -6,7 +7,8 @@ from vali_objects.exceptions.incorrect_live_results_count_exception import Incor
 class DataGeneratorHandler:
 
     def _get_financial_markets_data(self, exchange_list_order_ind: int = 0, expected_length: int = 0, *args):
-        exchange_list_order = [BinanceData()]
+        twelve_data_api_key = "asdfasdfasdfasdf"
+        exchange_list_order = [TwelveData(twelve_data_api_key), BinanceData()]
 
         try:
             args = args[0]
